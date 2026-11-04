@@ -1,0 +1,15 @@
+{
+  "name": "checkpoint-local",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Local snapshots, comparisons and verified restores for small project folders.",
+  "type": "module",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "checkpoint": "node src/checkpoint.mts",
+    "demo": "node scripts/demo.mts",
+    "test": "node --test test/checkpoint.test.mts"
+  }
+}

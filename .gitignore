@@ -1,0 +1,4 @@
+.checkpoint/
+node_modules/
+recovered-demo/
+.checkpoint-restore-*/

@@ -1,0 +1,3 @@
+:root { --ink: #20354b; --paper: #f2eee3; }
+body { margin: 3rem 1rem; background: var(--paper); color: var(--ink); font: 1rem/1.6 monospace; }
+main { max-width: 36rem; margin: auto; border-top: 2px solid var(--ink); padding-top: 1rem; }
