@@ -1,13 +1,13 @@
 # Checkpoint
 
-Checkpoint saves local versions of a project folder. It can tell you which files changed and recover an earlier version into a new folder. The working project stays where it is.
+I use Checkpoint to save local versions of a project folder. It can tell you which files changed and recover an earlier version into a new folder. The working project stays where it is.
 
 The example is a small portfolio. Save its original colours, try a different stylesheet, rename the homepage, then recover the original HTML and CSS.
 
 ## Start here
 
-1. Extract the ZIP. In VS Code, choose **File → Open Folder** and open the inner `checkpoint` folder containing `package.json`.
-2. Open **Terminal → New Terminal**. Run `node --version`. Use a recent Node 24 LTS or Node 26 LTS release. This release was tested on Node 24.22.1. If needed, install an LTS version from [nodejs.org](https://nodejs.org/en/download).
+1. Clone `https://github.com/HR5206/checkpoint-cli.git` and open `checkpoint-cli`, the folder containing `package.json`.
+2. Open **Terminal → New Terminal**. Run `node --version`. Use Node 24.12 or newer. This release was tested on Node 24.22.1. If needed, install an LTS version from [nodejs.org](https://nodejs.org/en/download).
 3. Run the demo:
 
 ~~~sh
@@ -26,7 +26,7 @@ There are no npm dependencies to install. The `.mts` files use the TypeScript sy
 
 ## Commands
 
-Run these from the inner `checkpoint` folder. Give paths with spaces their own pair of quotes.
+Run these from the repository root. Give paths with spaces their own pair of quotes.
 
 | Command | Purpose |
 |---|---|
@@ -41,7 +41,7 @@ For `history`, `compare` and `restore`, the folder can be omitted; the current w
 
 ## Try it by hand
 
-Start with the untouched `demo` folder included in the ZIP. Snapshot numbers below assume it has no existing store.
+Start with the untouched `demo` folder included in the repository. Snapshot numbers below assume it has no existing store.
 
 ~~~sh
 node src/checkpoint.mts scan demo
@@ -67,7 +67,7 @@ On a fresh demo, the three saves add **2, 1, and 0** objects. Open `recovered-de
 | `.checkpoint/objects/<full SHA-256>` | Exact bytes for one distinct file version. Equal content can share an object even across different filenames. |
 | `.checkpoint/snapshots/<id>/manifest.json` | The snapshot number, UTC creation time, note, and the relative path, full hash and byte count of every saved file. |
 
-The first 12 hash characters are for terminal display only. Storage and integrity checks use the full hash. A save writes its manifest after its objects; history ignores numbered directories that have no completed manifest. The storage format is the same as in the Hour 2 lesson.
+The first 12 hash characters are for terminal display only. Storage and integrity checks use the full hash. A save writes its manifest after its objects; history ignores numbered directories that have no completed manifest. The manifest is published after its objects have been written.
 
 A changed path is compared using its full file hash. A rename appears as one deletion and one addition. Checkpoint doesn't try to guess which files were renamed.
 
@@ -76,7 +76,7 @@ A changed path is compared using its full file hash. A rename appears as one del
 | File | Start reading here for… |
 |---|---|
 | `src/checkpoint.mts` | Command-line arguments, output, and routing. |
-| `src/files.mts` | The Hour 1 directory walk, path checks, and ignored folders. |
+| `src/files.mts` | Directory walking, path checks, and ignored folders. |
 | `src/snapshot.mts` | Hashing, saving objects, manifests, history, and object verification. |
 | `src/compare.mts` | Comparing two path-to-hash maps. |
 | `src/restore.mts` | Staging a verified restore and claiming a fresh destination. |
@@ -91,3 +91,7 @@ A changed path is compared using its full file hash. A rename appears as one del
 - Local history shares a disk with the project. It is not an off-device backup. An interrupted run can leave temporary files, unused objects, or an incomplete directory. Only completed manifests count as snapshots.
 - The restore destination must not already exist, even if it is empty. Objects are verified before the destination is claimed. This is not a power-loss-safe transaction; a hard interruption during the final move can leave an incomplete fresh output folder.
 - Content hashes catch missing or damaged objects; they do not authenticate a store supplied by someone else.
+
+## Sharing this project
+
+I keep this tool local: it reads and writes folders on the user’s own disk. A hosted service would change that privacy and storage model. For a recruiter, run `node scripts/demo.mts` or include a short terminal recording. I would add ignore-file rules and streaming reads before expanding its scope.
